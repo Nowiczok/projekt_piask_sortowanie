@@ -4,6 +4,7 @@
 #include <sys/time.h>
 #include <stdint.h>
 #include "utils.h"
+#include "my_timers.h"
 #include <mpi.h>
 
 int arr[ARRAY_SIZE];
@@ -28,7 +29,7 @@ int main(int argc, char** argv){
     if(myrank == root){
         printf("populating arrays\n");
         populate_arrays(arr, arr_ref);
-        start = micros();
+        start_time();
     }
 
     // distribute data across all 4 nodes
@@ -59,14 +60,13 @@ int main(int argc, char** argv){
     if(myrank == root){
         // last merge
         merge(arr, 0, ARRAY_SIZE/2-1, ARRAY_SIZE-1);
-        stop = micros();
+        stop_time();
+        print_time("Pararell sort completed. Elapsed:");
 
-        printf("\npararell sort completed, elapsed %f ms\n", (float)(stop - start)/1000.0f);
-
-        start = micros();
+        start_time();
         qsort(arr_ref, ARRAY_SIZE, sizeof(arr_ref[0]), cmpfunc);
-        stop = micros();
-        printf("\nsequential sort completed, elapsed %f ms\n", (float)(stop - start)/1000.0f);
+        stop_time();
+        print_time("Reference sort completed. Elapsed:");
 
         if(memcmp(arr, arr_ref, sizeof(arr)) == 0){
             printf("\r\nsorting equivalent\r\n");

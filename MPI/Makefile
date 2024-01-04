@@ -4,7 +4,7 @@ CFLAGS := -Ofast -std=c11 -I../utils
 RM := rm -rf
 BINARY_NAME := app
 
-SOURCES := main.c ../utils/utils.c
+SOURCES := main.c ../utils/utils.c ../utils/my_timers.c
 
 .PHONY: build
 build: $(SOURCES)
@@ -16,7 +16,7 @@ clean:
 
 .PHONY: run
 run:
-	mpiexec -np 4 ./$(BINARY_NAME)
+	mpiexec -np 4 ./build/$(BINARY_NAME)
 
 .PHONY: all
 all: clean build run
