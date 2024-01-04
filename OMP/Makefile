@@ -1,10 +1,10 @@
 # tool macros
-CC := gcc # FILL: the compiler
-CFLAGS := -fopenmp -Ofast -std=c11
+CC := icc
+CFLAGS := -qopenmp -Ofast -std=c11 -I../utils
 RM := rm -rf
 BINARY_NAME := app
 
-SOURCES := main.c
+SOURCES := main.c ../utils/my_timers.c
 
 .PHONY: build
 build: $(SOURCES)
@@ -12,11 +12,11 @@ build: $(SOURCES)
 
 .PHONY: clean
 clean:
-	$(RM) $(BINARY_NAME)
+	$(RM) ./build/$(BINARY_NAME)
 
 .PHONY: run
 run:
-	./$(BINARY_NAME)
+	build/$(BINARY_NAME)
 
 .PHONY: all
 all: clean build run

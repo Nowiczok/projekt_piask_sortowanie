@@ -6,6 +6,7 @@
 #include <inttypes.h>
 #include <omp.h>
 #include<sys/time.h>
+#include "my_timers.h"
  
 /* Function to merge the two haves arr[l..m] and arr[m+1..r] of array arr[] */
 void merge(int arr[], int l, int m, int r);
@@ -113,7 +114,7 @@ int64_t micros()
     return tv.tv_sec * 1000000 + tv.tv_usec;
 }
 
-#define ARRAY_SIZE 100000
+#define ARRAY_SIZE 10000000
 
 /* Driver program to test above functions */
 int main()
@@ -135,18 +136,16 @@ int main()
 
     // printArray(arr, n);
 
-    start = micros();
+    start_time();
     mergeSort(arr, n);
-    end = micros();
-    dif = (double)(end - start)/1000;
-    printf("Mergesort completed, %.3lf ms elapsed\n", dif);
+    stop_time();
+    print_time("Pararell mergesort completed. Elapsed:");
     // printArray(arr, n);
 
-    start = micros();
+    start_time();
     qsort(ref_arr, n, sizeof(ref_arr[0]), cmpfunc);
-    end = micros();
-    dif = (double)(end - start)/1000;
-    printf("Reference qsort completed, %.3lf ms elapsed\n", dif);
+    stop_time();
+    print_time("Reference qsort completed. Elapsed:");
     // printArray(ref_arr, n);
 
     if(memcmp(arr, ref_arr, sizeof(arr)) == 0){
